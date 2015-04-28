@@ -1,8 +1,10 @@
-require 'open-uri'
-require 'json'
 require 'wolfram'
+require 'uri'
+require 'json'
 
-Wolfram.appid = 'KEY'
+
+
+Wolfram.appid = 'HU838J-6VWELQ7KA8'
 
 query = 'movies in theaters'
 result = Wolfram.fetch(query)
@@ -18,7 +20,12 @@ hash.each do |line|
 	actor_hash.shift
 	actors = Array.new
 	actor_hash.each do |actor|
-	  actors.push actor.split(" | ")[0]
+		actors.push actor.split(" | ")[0]
+		wiki_page = open("http://en.wikipedia.org/w/api.php?action=query&titles=#{URI.escape(actor)}&prop=revisions&rvprop=content&format=json").read
+		parsed = JSON.parse(wiki_page)
+		puts
+		puts parsed
+		puts
 	end
 	puts actors
 	puts
