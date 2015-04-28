@@ -1,8 +1,29 @@
 require 'wolfram'
 require 'uri'
 require 'json'
+require 'wikipedia'
 
 
+actor = "Miles Teller"
+page = Wikipedia.find(actor).content
+# index = /([0-9][0-9][0-9][0-9][|][0-9]{1,2}[|][0-9]{1,2})/ =~ page
+# page = page[index..index+9]
+puts page
+
+def age_of actor
+	# page = Wikipedia.find(actor).content
+	# start_index = page.index('{{Birth date and age|')
+	# if start_index.nil?
+	# 	start_index = page.index('{{birth date and age|')
+	# end
+	# page = page[start_index..-1]
+	# end_index = page.index('}}')-1
+	# page = page[end_index-9..end_index]
+	page = Wikipedia.find(actor).content
+	index = /([0-9][0-9][0-9][0-9][|][0-9]{1,2}[|][0-9]{1,2})/ =~ page
+	page = page[index..index+9]
+	page
+end
 
 Wolfram.appid = 'HU838J-6VWELQ7KA8'
 
@@ -18,16 +39,12 @@ hash.each do |line|
 	actor_hash = Wolfram::HashPresenter.new(actor_result).to_hash
 	actor_hash = actor_hash[:pods]["Result"][0].split("\n")
 	actor_hash.shift
-	actors = Array.new
-	actor_hash.each do |actor|
-		actors.push actor.split(" | ")[0]
-		wiki_page = open("http://en.wikipedia.org/w/api.php?action=query&titles=#{URI.escape(actor)}&prop=revisions&rvprop=content&format=json").read
-		parsed = JSON.parse(wiki_page)
-		puts
-		puts parsed
-		puts
+	actor_hash.each do |actor_line|
+		actor = actor_line.split(" | ")[0]
+		puts "#{actor}"
+		puts "#{actor} #{age_of actor}"
 	end
-	puts actors
 	puts
 	puts
 end
+

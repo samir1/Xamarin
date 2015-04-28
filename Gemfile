@@ -1,4 +1,5 @@
-require 'open-uri'
-require 'json'
-require 'wolfram-alpha'
-require 'wolfram'
+source 'https://rubygems.org'
+
+gem 'json'
+gem 'wolfram'
+gem 'wikipedia-client'
