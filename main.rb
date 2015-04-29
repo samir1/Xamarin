@@ -35,7 +35,8 @@ hash = hash[:pods]["Result"][0].split("\n")
 hash.each do |line|
 	movie = line.split(" | ")[1]
 	puts movie
-	movie_imdb  = open(URI.escape("http://www.omdbapi.com/?t=#{movie}&y=&plot=short&r=json")) {|f| f.read }
+	
+	movie_imdb  = open(URI.escape("http://www.omdbapi.com/?t=#{movie}&y=#{Time.new.year}&plot=short&r=json")) {|f| f.read }
 	parsed = JSON.parse(movie_imdb)
 	actors = parsed["Actors"].split(", ")
 	actors.each do |actor|
