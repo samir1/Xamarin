@@ -1,4 +1,3 @@
-require 'fandango'
 require 'json'
 require 'open-uri'
 require 'uri'
