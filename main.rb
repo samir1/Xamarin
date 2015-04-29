@@ -29,7 +29,7 @@ def age_of actor
 	now.year - birthday.year - ((now.month > birthday.month || (now.month == birthday.month && now.day >= birthday.day)) ? 0 : 1)
 end
 
-Wolfram.appid = 'KEY' # Wolfram app id HU838J-6VWELQ7KA8
+Wolfram.appid = 'KEY' # Wolfram app id
 
 movies = movies_in_theaters
 movies.each do |line| # loops through movies in movie theaters
