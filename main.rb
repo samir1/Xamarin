@@ -1,14 +1,15 @@
 require 'wolfram'
 require 'uri'
+require 'open-uri'
 require 'json'
 require 'wikipedia'
 
 
-actor = "Miles Teller"
-page = Wikipedia.find(actor).content
-# index = /([0-9][0-9][0-9][0-9][|][0-9]{1,2}[|][0-9]{1,2})/ =~ page
-# page = page[index..index+9]
-puts page
+# actor = "Miles Teller"
+# page = Wikipedia.find(actor).content
+# # index = /([0-9][0-9][0-9][0-9][|][0-9]{1,2}[|][0-9]{1,2})/ =~ page
+# # page = page[index..index+9]
+# puts page
 
 def age_of actor
 	# page = Wikipedia.find(actor).content
@@ -34,14 +35,10 @@ hash = hash[:pods]["Result"][0].split("\n")
 hash.each do |line|
 	movie = line.split(" | ")[1]
 	puts movie
-	actor_query = movie + ' movie cast'
-	actor_result = Wolfram.fetch(actor_query)
-	actor_hash = Wolfram::HashPresenter.new(actor_result).to_hash
-	actor_hash = actor_hash[:pods]["Result"][0].split("\n")
-	actor_hash.shift
-	actor_hash.each do |actor_line|
-		actor = actor_line.split(" | ")[0]
-		puts "#{actor}"
+	movie_imdb  = open(URI.escape("http://www.omdbapi.com/?t=#{movie}&y=&plot=short&r=json")) {|f| f.read }
+	parsed = JSON.parse(movie_imdb)
+	actors = parsed["Actors"].split(", ")
+	actors.each do |actor|
 		puts "#{actor} #{age_of actor}"
 	end
 	puts
